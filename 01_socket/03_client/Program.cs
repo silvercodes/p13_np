@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 
-const string serverIp = "127.0.0.1";
+const string serverIp = "172.20.10.13";
 const int port = 8080;
 
 

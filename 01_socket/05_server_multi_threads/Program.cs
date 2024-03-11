@@ -71,7 +71,7 @@
 
 using _05_server_multi_threads;
 
-const string serverIp = "127.0.0.1";
+const string serverIp = "172.20.10.13";
 const int port = 8080;
 
 await using Server server = new Server(serverIp, port);
