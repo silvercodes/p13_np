@@ -1,8 +1,4 @@
-﻿
-
-
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 
@@ -24,15 +20,15 @@ try
 	using StreamReader reader = new StreamReader(stream);
 	using StreamWriter writer = new StreamWriter(stream);
 
-	string? message = reader.ReadToEnd();
+	string? message = reader.ReadLine();
     Console.WriteLine($">>> {message}");
 
+	Thread.Sleep(5000);
 	writer.WriteLine("Hello from server");
 	stream.Flush();
 }
 catch (Exception ex)
 {
-
     Console.WriteLine($"ERROR: {ex.Message}");
 }
 finally
