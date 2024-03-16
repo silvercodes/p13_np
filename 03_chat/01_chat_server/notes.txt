@@ -1,1 +1,17 @@
 ﻿
+
+
+
+
+auth
+len:100
+date:03487629847687
+type:json
+
+{
+	"login": "vasia",
+	"password": "123123123"
+}
+
+
+
