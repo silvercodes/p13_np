@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProtoLib.PayloadTypes
 {
-    public class AuthRequestPayload : IJsonPayload
+    public class AuthRequestPayload : JsonPayload
     {
         public string Login { get; set; }
         public string Password { get; set; }
@@ -16,15 +16,11 @@ namespace ProtoLib.PayloadTypes
             Login = login;
             Password = password;
         }
-        public string GetJson()
+        public override string GetJson()
         {
             return JsonSerializer.Serialize(this);
         }
-        public string GetPayloadType()
-        {
-            return "json";
-        }
-        public MemoryStream GetStream()
+        public override MemoryStream GetStream()
         {
             MemoryStream memStream = new MemoryStream();
 

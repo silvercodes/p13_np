@@ -23,6 +23,18 @@ namespace _01_chat_server
             {
                 netStream = tcpClient.GetStream();
 
+                // test code
+                while(true)
+                {
+                    MemoryStream memStream = Read(netStream);
+                    memStream.Position = 0;
+
+                    using StreamReader sr = new StreamReader(memStream);
+                    string data = sr.ReadToEnd();
+                    Console.WriteLine(data);
+
+                }
+
 
 
             }
@@ -34,5 +46,20 @@ namespace _01_chat_server
         }
 
 
+        private MemoryStream Read(NetworkStream netStream)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+
+            byte[] bytes = new byte[1024];
+            int readBytesCount = 0;
+            readBytesCount = netStream.Read(bytes, 0, bytes.Length);
+            memoryStream.Write(bytes, 0, readBytesCount);
+
+            return memoryStream;
+        }
+
+
     }
+
+
 }

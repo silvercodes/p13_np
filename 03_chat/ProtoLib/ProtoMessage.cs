@@ -30,31 +30,47 @@ namespace ProtoLib
             Payload = payload;
 
             PayloadStream = payload.GetStream();
+            PayloadStream.Position = 0;
 
             Headers[HEADER_PAYLOAD_LEN] = PayloadStream.Length.ToString();
-
-
-
-            Headers[HEADER_PAYLOAD_TYPE]
+            Headers[HEADER_PAYLOAD_TYPE] = Payload.GetPayloadType();
         }
 
         public MemoryStream GetStream()
         {
-            MemoryStream? payloadStream = null;
+            MemoryStream memStream = new MemoryStream();
+            memStream.Write(new byte[4], 0, 4);
+
+            StreamWriter writer = new StreamWriter(memStream);
+
+            writer.WriteLine(Action);
+            foreach (KeyValuePair<string, string> h in Headers)
+                writer.WriteLine($"{h.Key}:{h.Value}");
+            writer.WriteLine();
+            writer.Flush();
 
             if (Payload is not null)
             {
-                payloadStream = Payload.GetStream();
-                Headers["len"] = 
+                PayloadStream.CopyTo(memStream);
             }
 
+            memStream.Position = 0;
 
+            byte[] sizeHeader = ConvertInt((int)memStream.Length);
+            memStream.Write(sizeHeader, 0, 4);
 
+            memStream.Position = 0;
 
-
+            return memStream;
         }
 
+        private byte[] ConvertInt(int val)
+        {
+            byte[] intBytes = BitConverter.GetBytes(val);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(intBytes);
 
-
+            return intBytes;
+        }
     }
 }
