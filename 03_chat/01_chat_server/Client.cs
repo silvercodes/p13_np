@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ProtoLib;
+using ProtoLib.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -23,15 +25,22 @@ namespace _01_chat_server
             {
                 netStream = tcpClient.GetStream();
 
-                // test code
-                while(true)
-                {
-                    MemoryStream memStream = Read(netStream);
-                    memStream.Position = 0;
+                ProtoMessageBuilder builder = new ProtoMessageBuilder(netStream);
 
-                    using StreamReader sr = new StreamReader(memStream);
-                    string data = sr.ReadToEnd();
-                    Console.WriteLine(data);
+
+                while (true)
+                {
+                    ProtoMessage protoMessage = builder.Receive();
+
+
+
+
+                    //MemoryStream memStream = Read(netStream);
+                    //memStream.Position = 0;
+
+                    //using StreamReader sr = new StreamReader(memStream);
+                    //string data = sr.ReadToEnd();
+                    //Console.WriteLine(data);
 
                 }
 

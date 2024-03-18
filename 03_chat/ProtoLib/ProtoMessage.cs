@@ -12,7 +12,7 @@ namespace ProtoLib
     {
         private const string HEADER_PAYLOAD_LEN = "len";
         private const string HEADER_PAYLOAD_TYPE = "ptype";
-        public required string? Action { get; set; }
+        public string? Action { get; set; }
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
         public IPayload? Payload { get; private set; }
@@ -56,7 +56,7 @@ namespace ProtoLib
 
             memStream.Position = 0;
 
-            byte[] sizeHeader = ConvertInt((int)memStream.Length);
+            byte[] sizeHeader = ConvertInt((int)memStream.Length - 4);
             memStream.Write(sizeHeader, 0, 4);
 
             memStream.Position = 0;

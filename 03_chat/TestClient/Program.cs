@@ -21,7 +21,21 @@ m.SetHeader("testHeader", "hohoho");
 m.SetPayload(new AuthRequestPayload("vasia", "123123123"));
 
 
-m.GetStream().CopyTo(netStrteam);
+try
+{
+    while(true)
+    {
+        MemoryStream memStream = m.GetStream();
+        Console.Write("Press to send");
+        Console.ReadLine();
+        memStream.CopyTo(netStrteam);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"ERROR: {ex.Message}");
+}
+
 
 
 
