@@ -46,17 +46,7 @@ namespace _01_chat_server
         }
 
 
-        private MemoryStream Read(NetworkStream netStream)
-        {
-            MemoryStream memoryStream = new MemoryStream();
-
-            byte[] bytes = new byte[1024];
-            int readBytesCount = 0;
-            readBytesCount = netStream.Read(bytes, 0, bytes.Length);
-            memoryStream.Write(bytes, 0, readBytesCount);
-
-            return memoryStream;
-        }
+        
 
 
     }
