@@ -33,15 +33,6 @@ namespace _01_chat_server
                     ProtoMessage protoMessage = builder.Receive();
 
 
-
-
-                    //MemoryStream memStream = Read(netStream);
-                    //memStream.Position = 0;
-
-                    //using StreamReader sr = new StreamReader(memStream);
-                    //string data = sr.ReadToEnd();
-                    //Console.WriteLine(data);
-
                 }
 
 

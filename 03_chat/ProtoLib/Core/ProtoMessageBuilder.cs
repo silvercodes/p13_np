@@ -10,7 +10,7 @@ namespace ProtoLib.Core;
 public class ProtoMessageBuilder
 {
     private NetworkStream netStrteam;
-    private MemoryStream memStream;
+    private MemoryStream memStream = null!;
 
     public ProtoMessageBuilder(NetworkStream netStrteam)
     {
@@ -21,16 +21,44 @@ public class ProtoMessageBuilder
     {
         int readingSize = ConvertToInt(ReadBytes(4));
 
-        memStream = new MemoryStream(400);
-        Read(400);
+        memStream = new MemoryStream(readingSize);
+        memStream.Write(ReadBytes(readingSize), 0, readingSize);
+        memStream.Position = 0;
 
+        ProtoMessage pm  = new ProtoMessage();
+        
+        using StreamReader sr = new StreamReader(memStream);
 
+        ExtractMetadata(pm, sr);
+        ExtrtactpayloadStrream(pm);
 
+        memStream.Dispose();
 
+        return pm;
+    }
 
+    private void ExtractMetadata(ProtoMessage pm, StreamReader sr)
+    {
+        sr.BaseStream.Position = 0;
 
+        pm.Action = sr.ReadLine();
 
-        return new ProtoMessage();
+        string headerLine;
+        while(! string.IsNullOrEmpty(headerLine = sr.ReadLine()))
+            pm.SetHeader(headerLine);
+    }
+
+    private void ExtrtactpayloadStrream(ProtoMessage pm)
+    {
+        int payloadLength = pm.PayloadLength;
+
+        memStream.Seek(-payloadLength, SeekOrigin.End);
+
+        MemoryStream payloadStream = new MemoryStream(payloadLength);
+        memStream.CopyTo(payloadStream);
+        payloadStream.Position = 0;
+
+        pm.PayloadStream = payloadStream;
     }
 
     private byte[] ReadBytes(int count)
@@ -40,14 +68,6 @@ public class ProtoMessageBuilder
         netStrteam.ReadExactly(bytes, 0, count);
 
         return bytes;
-    }
-
-    private void Read(int count)
-    {
-        byte[] bytes = new byte[count];
-        netStrteam.ReadExactly(bytes, 0, count);
-
-        memStream.Write(bytes, 0, count);
     }
 
     private int ConvertToInt(byte[] bytes)

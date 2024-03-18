@@ -28,6 +28,7 @@ try
         MemoryStream memStream = m.GetStream();
         Console.Write("Press to send");
         Console.ReadLine();
+        Console.WriteLine(memStream.Length);
         memStream.CopyTo(netStrteam);
     }
 }
